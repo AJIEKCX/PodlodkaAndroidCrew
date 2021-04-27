@@ -39,7 +39,7 @@ fun SessionsScreen(
     onBack: () -> Unit,
     viewModel: SessionsViewModel = viewModel()
 ) {
-    var showLogoutDialog by remember { mutableStateOf(false) }
+    var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
     var searchText by rememberSaveable { mutableStateOf("") }
     val scaffoldState = rememberScaffoldState()
     val uiState by viewModel.uiState.collectAsState()
