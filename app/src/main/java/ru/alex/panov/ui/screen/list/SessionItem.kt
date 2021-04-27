@@ -33,7 +33,7 @@ internal fun SessionItem(
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(12.dp)
+                .padding(start = 12.dp, end = 4.dp, top = 12.dp, bottom = 12.dp)
         ) {
             CircleAvatar(
                 url = session.imageUrl,
