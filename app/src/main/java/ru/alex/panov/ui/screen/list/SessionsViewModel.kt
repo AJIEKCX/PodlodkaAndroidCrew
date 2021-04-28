@@ -4,40 +4,51 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import ru.alex.panov.model.MockSessions
-import ru.alex.panov.model.Session
 
 class SessionsViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(SessionsUiState.Default)
     val uiState: StateFlow<SessionsUiState> = _uiState
 
+    private val sessions = MockSessions
+
     init {
-        _uiState.value = createUiState(MockSessions)
+        _uiState.value = createUiState(favouriteIds = emptySet(), searchText = "")
     }
 
     fun onErrorMessageShowed() {
         _uiState.value = uiState.value.copy(showErrorMessage = false)
     }
 
+    fun onSearchTextChanged(value: String) {
+        _uiState.value = createUiState(uiState.value.favouriteIds, value)
+    }
+
     fun onFavouriteClicked(sessionId: String) {
-        val newSessions = uiState.value.sessionGroups.flatMap { it.value }
-            .map { session ->
-                if (session.id == sessionId) {
-                    session.copy(isFavourite = session.isFavourite.not())
-                } else {
-                    session
-                }
+        val newFavouriteIds = uiState.value.favouriteIds.toMutableSet().apply {
+            val isSessionAdded = add(sessionId)
+            if (isSessionAdded.not()) {
+                remove(sessionId)
             }
-        if (newSessions.count { it.isFavourite } > MAX_FAVOURITES) {
+        }
+        if (newFavouriteIds.count() > MAX_FAVOURITES) {
             _uiState.value = uiState.value.copy(showErrorMessage = true)
         } else {
-            _uiState.value = createUiState(newSessions)
+            _uiState.value = createUiState(newFavouriteIds, uiState.value.searchText)
         }
     }
 
-    private fun createUiState(sessions: List<Session>): SessionsUiState {
+    private fun createUiState(favouriteIds: Set<String>, searchText: String): SessionsUiState {
         return SessionsUiState(
-            sessionGroups = sessions.groupBy { it.date },
-            favourites = sessions.filter { it.isFavourite }
+            sessionGroups = sessions
+                .filter { session ->
+                    searchText.isBlank() ||
+                            session.description.contains(searchText, ignoreCase = true) ||
+                            session.speaker.contains(searchText, ignoreCase = true)
+                }
+                .groupBy { it.date },
+            favouriteSessions = sessions.filter { it.id in favouriteIds },
+            favouriteIds = favouriteIds,
+            searchText = searchText
         )
     }
 

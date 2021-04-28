@@ -21,6 +21,7 @@ import ru.alex.panov.ui.widget.FavouriteIcon
 @Composable
 internal fun SessionItem(
     session: Session,
+    favouriteIds: Set<String>,
     onFavouriteClicked: (Session) -> Unit,
     onSessionClicked: (String) -> Unit
 ) {
@@ -64,7 +65,7 @@ internal fun SessionItem(
                 )
             }
             FavouriteIcon(
-                isFavourite = session.isFavourite,
+                isFavourite = session.id in favouriteIds,
                 onClick = { onFavouriteClicked(session) },
                 modifier = Modifier.align(Alignment.CenterVertically)
             )

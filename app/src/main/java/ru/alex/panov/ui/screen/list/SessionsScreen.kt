@@ -3,24 +3,19 @@ package ru.alex.panov.ui.screen.list
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -31,7 +26,7 @@ import com.google.accompanist.insets.systemBarsPadding
 import ru.alex.panov.R
 import ru.alex.panov.model.Session
 import ru.alex.panov.ui.theme.AppTheme
-import ru.alex.panov.ui.widget.AppTextField
+import ru.alex.panov.ui.widget.SearchTextField
 
 @Composable
 fun SessionsScreen(
@@ -40,7 +35,6 @@ fun SessionsScreen(
     viewModel: SessionsViewModel = viewModel()
 ) {
     var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
-    var searchText by rememberSaveable { mutableStateOf("") }
     val scaffoldState = rememberScaffoldState()
     val uiState by viewModel.uiState.collectAsState()
 
@@ -63,12 +57,10 @@ fun SessionsScreen(
     }
 
     SessionsContent(
-        Modifier.systemBarsPadding(),
+        uiState,
         scaffoldState,
-        uiState.sessionGroups,
-        uiState.favourites,
-        searchText,
-        onSearchChanged = { searchText = it },
+        Modifier.systemBarsPadding(),
+        onSearchChanged = viewModel::onSearchTextChanged,
         onFavouriteClicked = { viewModel.onFavouriteClicked(it.id) },
         onSessionClicked = sessionClicked
     )
@@ -76,22 +68,20 @@ fun SessionsScreen(
 
 @Composable
 private fun SessionsContent(
-    modifier: Modifier,
+    uiState: SessionsUiState,
     scaffoldState: ScaffoldState,
-    sessionGroups: Map<String, List<Session>>,
-    favourites: List<Session>,
-    searchText: String,
+    modifier: Modifier = Modifier,
     onSearchChanged: (String) -> Unit,
     onFavouriteClicked: (Session) -> Unit,
     onSessionClicked: (String) -> Unit
 ) {
     Scaffold(modifier, scaffoldState = scaffoldState, topBar = {
-        SearchTextField(searchText, onSearchChanged)
+        SearchTextField(uiState.searchText, onSearchChanged)
     }) {
         LazyColumn(
             contentPadding = PaddingValues(16.dp)
         ) {
-            if (favourites.isNotEmpty()) {
+            if (uiState.favouriteSessions.isNotEmpty()) {
                 item {
                     Text(
                         stringResource(R.string.sessions_favourites_title),
@@ -104,45 +94,38 @@ private fun SessionsContent(
                         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 4.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(favourites) { item ->
+                        items(uiState.favouriteSessions) { item ->
                             FavouriteSession(item, onSessionClicked)
                         }
                     }
                 }
             }
-            item {
-                Text(
-                    stringResource(R.string.sessions_title),
-                    Modifier.paddingFromBaseline(top = 32.dp),
-                    style = AppTheme.typography.h1
-                )
-            }
-            sessionGroups.forEach { (date, sessions) ->
+            if (uiState.sessionGroups.isNotEmpty()) {
                 item {
                     Text(
-                        date,
+                        stringResource(R.string.sessions_title),
                         Modifier.paddingFromBaseline(top = 32.dp),
-                        style = AppTheme.typography.subtitle1
+                        style = AppTheme.typography.h1
                     )
                 }
-                items(sessions) { item ->
-                    SessionItem(item, onFavouriteClicked, onSessionClicked)
+                uiState.sessionGroups.forEach { (date, sessions) ->
+                    item {
+                        Text(
+                            date,
+                            Modifier.paddingFromBaseline(top = 32.dp),
+                            style = AppTheme.typography.subtitle1
+                        )
+                    }
+                    items(sessions) { item ->
+                        SessionItem(
+                            item,
+                            uiState.favouriteIds,
+                            onFavouriteClicked,
+                            onSessionClicked
+                        )
+                    }
                 }
             }
         }
     }
-}
-
-@Composable
-private fun SearchTextField(
-    searchText: String,
-    onSearchChanged: (String) -> Unit,
-) {
-    AppTextField(
-        label = { Text(stringResource(R.string.sessions_search_label)) },
-        value = searchText,
-        onValueChange = onSearchChanged,
-        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
 }

@@ -6,8 +6,7 @@ data class Session(
     val date: String,
     val timeInterval: String,
     val description: String,
-    val imageUrl: String,
-    val isFavourite: Boolean = false
+    val imageUrl: String
 )
 
 val MockSessions = listOf(
