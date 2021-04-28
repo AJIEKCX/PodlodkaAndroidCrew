@@ -1,6 +1,6 @@
-package ru.alex.panov.ui.screen.list
+package ru.alex.panov.presentation.screen.list
 
-import ru.alex.panov.model.Session
+import ru.alex.panov.data.model.Session
 
 data class SessionsUiState(
     val sessionGroups: Map<String, List<Session>>,

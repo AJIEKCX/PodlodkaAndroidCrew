@@ -7,9 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import com.google.accompanist.insets.ProvideWindowInsets
-import ru.alex.panov.ui.NavGraph
-import ru.alex.panov.ui.theme.AppTheme
+import dagger.hilt.android.AndroidEntryPoint
+import ru.alex.panov.presentation.NavGraph
+import ru.alex.panov.presentation.theme.AppTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

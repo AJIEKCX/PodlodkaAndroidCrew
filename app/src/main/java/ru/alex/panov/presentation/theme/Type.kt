@@ -1,4 +1,4 @@
-package ru.alex.panov.ui.theme
+package ru.alex.panov.presentation.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

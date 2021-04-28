@@ -1,4 +1,4 @@
-package ru.alex.panov.ui.screen.list
+package ru.alex.panov.presentation.screen.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,10 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import ru.alex.panov.model.Session
-import ru.alex.panov.ui.theme.AppTheme
-import ru.alex.panov.ui.widget.CircleAvatar
-import ru.alex.panov.ui.widget.FavouriteIcon
+import ru.alex.panov.data.model.Session
+import ru.alex.panov.presentation.theme.AppTheme
+import ru.alex.panov.presentation.widget.CircleAvatar
+import ru.alex.panov.presentation.widget.FavouriteIcon
 
 @Composable
 internal fun SessionItem(

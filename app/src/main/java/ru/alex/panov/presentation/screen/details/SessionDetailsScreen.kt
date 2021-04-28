@@ -1,4 +1,4 @@
-package ru.alex.panov.ui.screen.details
+package ru.alex.panov.presentation.screen.details
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,15 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ru.alex.panov.model.Session
-import ru.alex.panov.ui.theme.AppTheme
-import ru.alex.panov.ui.widget.CircleAvatar
+import ru.alex.panov.data.model.Session
+import ru.alex.panov.presentation.theme.AppTheme
+import ru.alex.panov.presentation.widget.CircleAvatar
 
 @Composable
 fun SessionDetailsScreen(viewModel: SessionDetailsViewModel = viewModel()) {
     val session by viewModel.session.collectAsState()
-
-    SessionDetailsContent(session!!)
+    session?.let {
+        SessionDetailsContent(it)
+    }
 }
 
 @Composable

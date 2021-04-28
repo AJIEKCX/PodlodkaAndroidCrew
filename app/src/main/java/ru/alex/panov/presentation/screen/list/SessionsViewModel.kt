@@ -1,18 +1,26 @@
-package ru.alex.panov.ui.screen.list
+package ru.alex.panov.presentation.screen.list
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import ru.alex.panov.model.MockSessions
+import kotlinx.coroutines.launch
+import ru.alex.panov.data.model.Session
+import ru.alex.panov.domain.SessionInteractor
+import javax.inject.Inject
 
-class SessionsViewModel : ViewModel() {
+@HiltViewModel
+class SessionsViewModel @Inject constructor(
+    private val interactor: SessionInteractor
+) : ViewModel() {
     private val _uiState = MutableStateFlow(SessionsUiState.Default)
     val uiState: StateFlow<SessionsUiState> = _uiState
 
-    private val sessions = MockSessions
+    private var sessions: List<Session> = emptyList()
 
     init {
-        _uiState.value = createUiState(favouriteIds = emptySet(), searchText = "")
+        loadData()
     }
 
     fun onErrorMessageShowed() {
@@ -37,15 +45,16 @@ class SessionsViewModel : ViewModel() {
         }
     }
 
+    private fun loadData() {
+        viewModelScope.launch {
+            sessions = interactor.getSessions()
+            _uiState.value = createUiState(favouriteIds = emptySet(), searchText = "")
+        }
+    }
+
     private fun createUiState(favouriteIds: Set<String>, searchText: String): SessionsUiState {
         return SessionsUiState(
-            sessionGroups = sessions
-                .filter { session ->
-                    searchText.isBlank() ||
-                            session.description.contains(searchText, ignoreCase = true) ||
-                            session.speaker.contains(searchText, ignoreCase = true)
-                }
-                .groupBy { it.date },
+            sessionGroups = interactor.filterSessions(sessions, searchText).groupBy { it.date },
             favouriteSessions = sessions.filter { it.id in favouriteIds },
             favouriteIds = favouriteIds,
             searchText = searchText

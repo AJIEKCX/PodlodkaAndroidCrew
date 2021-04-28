@@ -1,4 +1,4 @@
-package ru.alex.panov.ui.widget
+package ru.alex.panov.presentation.widget
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
-import ru.alex.panov.ui.theme.AppTheme
+import ru.alex.panov.presentation.theme.AppTheme
 
 @Composable
 fun AppTextField(

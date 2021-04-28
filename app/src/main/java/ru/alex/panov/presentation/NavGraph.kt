@@ -1,8 +1,8 @@
-package ru.alex.panov.ui
+package ru.alex.panov.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,13 +10,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import ru.alex.panov.ui.MainDestinations.SESSIONS_ROUTE
-import ru.alex.panov.ui.MainDestinations.SESSION_DETAILS_ID_KEY
-import ru.alex.panov.ui.MainDestinations.SESSION_DETAILS_ROUTE
-import ru.alex.panov.ui.screen.details.SessionDetailsScreen
-import ru.alex.panov.ui.screen.details.SessionDetailsViewModel
-import ru.alex.panov.ui.screen.list.SessionsScreen
-import ru.alex.panov.ui.screen.list.SessionsViewModel
+import ru.alex.panov.presentation.MainDestinations.SESSIONS_ROUTE
+import ru.alex.panov.presentation.MainDestinations.SESSION_DETAILS_ID_KEY
+import ru.alex.panov.presentation.MainDestinations.SESSION_DETAILS_ROUTE
+import ru.alex.panov.presentation.screen.details.SessionDetailsScreen
+import ru.alex.panov.presentation.screen.details.SessionDetailsViewModel
+import ru.alex.panov.presentation.screen.list.SessionsScreen
+import ru.alex.panov.presentation.screen.list.SessionsViewModel
 
 object MainDestinations {
     const val SESSIONS_ROUTE = "sessions"
@@ -34,13 +34,15 @@ fun NavGraph(startDestination: String = SESSIONS_ROUTE, onFinish: () -> Unit) {
         startDestination = startDestination
     ) {
         composable(SESSIONS_ROUTE) {
-            SessionsScreen(actions.sessionClicked, actions.onBack)
+            val viewModel = hiltNavGraphViewModel<SessionsViewModel>()
+            SessionsScreen(actions.sessionClicked, actions.onBack, viewModel)
         }
         composable(
             "$SESSION_DETAILS_ROUTE/{$SESSION_DETAILS_ID_KEY}",
             arguments = listOf(navArgument(SESSION_DETAILS_ID_KEY) { type = NavType.StringType })
         ) {
-            SessionDetailsScreen()
+            val viewModel = hiltNavGraphViewModel<SessionDetailsViewModel>()
+            SessionDetailsScreen(viewModel)
         }
     }
 }

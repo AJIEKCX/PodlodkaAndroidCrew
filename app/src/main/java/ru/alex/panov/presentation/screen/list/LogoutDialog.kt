@@ -1,4 +1,4 @@
-package ru.alex.panov.ui.screen.list
+package ru.alex.panov.presentation.screen.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.alex.panov.R
-import ru.alex.panov.ui.theme.AppTheme
+import ru.alex.panov.presentation.theme.AppTheme
 
 @Composable
 fun LogoutDialog(

@@ -1,4 +1,4 @@
-package ru.alex.panov.ui.widget
+package ru.alex.panov.presentation.widget
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable

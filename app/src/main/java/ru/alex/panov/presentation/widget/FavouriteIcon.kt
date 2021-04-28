@@ -1,4 +1,4 @@
-package ru.alex.panov.ui.widget
+package ru.alex.panov.presentation.widget
 
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton

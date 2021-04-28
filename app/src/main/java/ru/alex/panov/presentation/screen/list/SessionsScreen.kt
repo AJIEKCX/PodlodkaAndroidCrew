@@ -1,4 +1,4 @@
-package ru.alex.panov.ui.screen.list
+package ru.alex.panov.presentation.screen.list
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.insets.systemBarsPadding
 import ru.alex.panov.R
-import ru.alex.panov.model.Session
-import ru.alex.panov.ui.theme.AppTheme
-import ru.alex.panov.ui.widget.SearchTextField
+import ru.alex.panov.data.model.Session
+import ru.alex.panov.presentation.theme.AppTheme
+import ru.alex.panov.presentation.widget.SearchTextField
 
 @Composable
 fun SessionsScreen(

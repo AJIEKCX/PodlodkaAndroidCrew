@@ -1,4 +1,4 @@
-package ru.alex.panov.ui.screen.list
+package ru.alex.panov.presentation.screen.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import ru.alex.panov.model.Session
-import ru.alex.panov.ui.theme.AppTheme
+import ru.alex.panov.data.model.Session
+import ru.alex.panov.presentation.theme.AppTheme
 
 @Composable
 internal fun FavouriteSession(session: Session, onSessionClicked: (String) -> Unit) {
