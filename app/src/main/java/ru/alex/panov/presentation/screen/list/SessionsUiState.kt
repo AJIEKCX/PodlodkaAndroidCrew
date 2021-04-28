@@ -7,7 +7,8 @@ data class SessionsUiState(
     val favouriteSessions: List<Session>,
     val favouriteIds: Set<String>,
     val searchText: String,
-    val showErrorMessage: Boolean = false
+    val errorMessage: String = "",
+    val isLoading: Boolean = false
 ) {
     companion object {
         val Default = SessionsUiState(
@@ -15,7 +16,8 @@ data class SessionsUiState(
             favouriteSessions = emptyList(),
             favouriteIds = emptySet(),
             searchText = "",
-            showErrorMessage = false
+            errorMessage = "",
+            isLoading = false
         )
     }
 }

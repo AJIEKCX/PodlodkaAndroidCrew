@@ -26,6 +26,7 @@ import com.google.accompanist.insets.systemBarsPadding
 import ru.alex.panov.R
 import ru.alex.panov.data.model.Session
 import ru.alex.panov.presentation.theme.AppTheme
+import ru.alex.panov.presentation.widget.AppProgress
 import ru.alex.panov.presentation.widget.SearchTextField
 
 @Composable
@@ -48,22 +49,25 @@ fun SessionsScreen(
         )
     }
 
-    if (uiState.showErrorMessage) {
-        val errorMessage = stringResource(R.string.sessions_add_to_favourites_error)
+    if (uiState.errorMessage.isNotEmpty()) {
         LaunchedEffect(scaffoldState) {
-            scaffoldState.snackbarHostState.showSnackbar(errorMessage)
+            scaffoldState.snackbarHostState.showSnackbar(uiState.errorMessage)
             viewModel.onErrorMessageShowed()
         }
     }
 
-    SessionsContent(
-        uiState,
-        scaffoldState,
-        Modifier.systemBarsPadding(),
-        onSearchChanged = viewModel::onSearchTextChanged,
-        onFavouriteClicked = { viewModel.onFavouriteClicked(it.id) },
-        onSessionClicked = sessionClicked
-    )
+    if (uiState.isLoading) {
+        AppProgress()
+    } else {
+        SessionsContent(
+            uiState,
+            scaffoldState,
+            Modifier.systemBarsPadding(),
+            onSearchChanged = viewModel::onSearchTextChanged,
+            onFavouriteClicked = { viewModel.onFavouriteClicked(it.id) },
+            onSessionClicked = sessionClicked
+        )
+    }
 }
 
 @Composable

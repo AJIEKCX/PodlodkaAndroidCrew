@@ -5,7 +5,7 @@ import ru.alex.panov.data.model.Session
 
 class SessionRepository {
     suspend fun getSessions(): List<Session> {
-        delay(1000)
+        delay(2000)
         return MockSessions
     }
 
