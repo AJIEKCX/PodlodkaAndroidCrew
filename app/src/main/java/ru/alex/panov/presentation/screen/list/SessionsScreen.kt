@@ -98,7 +98,7 @@ private fun SessionsContent(
                         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 4.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(uiState.favouriteSessions) { item ->
+                        items(uiState.favouriteSessions, key = { it.id }) { item ->
                             FavouriteSession(item, onSessionClicked)
                         }
                     }
@@ -120,7 +120,7 @@ private fun SessionsContent(
                             style = AppTheme.typography.subtitle1
                         )
                     }
-                    items(sessions) { item ->
+                    items(sessions, key = { it.id }) { item ->
                         SessionItem(
                             item,
                             uiState.favouriteIds,
