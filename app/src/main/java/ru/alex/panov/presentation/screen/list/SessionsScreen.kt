@@ -45,7 +45,7 @@ fun SessionsScreen(
     if (showLogoutDialog) {
         val onDismiss = { showLogoutDialog = false }
         LogoutDialog(
-            onDismiss = { showLogoutDialog = false },
+            onDismiss = onDismiss,
             onPositiveAction = { onDismiss(); onBack() }
         )
     }
