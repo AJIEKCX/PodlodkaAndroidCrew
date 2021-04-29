@@ -26,14 +26,13 @@ internal fun SessionItem(
     onSessionClicked: (String) -> Unit
 ) {
     Card(
-        Modifier
-            .padding(top = 16.dp)
-            .clickable { onSessionClicked(session.id) },
+        Modifier.padding(top = 16.dp),
         elevation = AppTheme.elevations.card
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
+                .clickable { onSessionClicked(session.id) }
                 .padding(start = 12.dp, end = 4.dp, top = 12.dp, bottom = 12.dp)
         ) {
             CircleAvatar(

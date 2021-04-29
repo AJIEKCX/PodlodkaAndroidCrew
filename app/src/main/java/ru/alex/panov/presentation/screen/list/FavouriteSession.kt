@@ -17,13 +17,15 @@ import ru.alex.panov.presentation.theme.AppTheme
 @Composable
 internal fun FavouriteSession(session: Session, onSessionClicked: (String) -> Unit) {
     Card(
-        Modifier
-            .size(136.dp)
-            .clickable { onSessionClicked(session.id) },
+        Modifier.size(136.dp),
         shape = AppTheme.shapes.medium,
         elevation = AppTheme.elevations.card
     ) {
-        Column(Modifier.padding(8.dp)) {
+        Column(
+            Modifier
+                .clickable { onSessionClicked(session.id) }
+                .padding(8.dp)
+        ) {
             Text(
                 session.timeInterval,
                 style = AppTheme.typography.h1,
