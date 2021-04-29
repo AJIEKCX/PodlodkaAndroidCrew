@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -79,8 +80,13 @@ private fun SessionsContent(
     onFavouriteClicked: (Session) -> Unit,
     onSessionClicked: (String) -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
     Scaffold(modifier, scaffoldState = scaffoldState, topBar = {
-        SearchTextField(uiState.searchText, onSearchChanged)
+        SearchTextField(
+            uiState.searchText,
+            onSearchChanged,
+            onDone = { focusManager.clearFocus() }
+        )
     }) {
         LazyColumn(
             contentPadding = PaddingValues(16.dp)

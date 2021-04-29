@@ -1,6 +1,7 @@
 package ru.alex.panov.presentation.widget
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -17,6 +18,7 @@ import ru.alex.panov.R
 fun SearchTextField(
     searchText: String,
     onSearchChanged: (String) -> Unit,
+    onDone: () -> Unit
 ) {
     AppTextField(
         label = { Text(stringResource(R.string.sessions_search_label)) },
@@ -31,5 +33,6 @@ fun SearchTextField(
             }
         },
         modifier = Modifier.padding(horizontal = 16.dp),
+        keyboardActions = KeyboardActions(onDone = { onDone() })
     )
 }
